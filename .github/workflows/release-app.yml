@@ -1,0 +1,67 @@
+name: Create Release
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build_app:
+    name: "Build app"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Generate Version
+        id: version
+        run: |
+          # Calculate minutes since 2026-01-01 00:00:00 UTC
+          # 1767243600 is the Unix timestamp for 1767243600000L
+          NOW=$(date +%s)
+          BASE=1767243600
+          VERSION_CODE=$(( (NOW - BASE) / 60 ))
+          VERSION_NAME="1.0.$VERSION_CODE"
+          echo "VERSION_CODE=$VERSION_CODE" >> $GITHUB_OUTPUT
+          echo "VERSION_NAME=$VERSION_NAME" >> $GITHUB_OUTPUT
+
+      - name: Generate Release Apk
+        run: ./gradlew :app:assembleRelease -PVERSION_CODE=${{ steps.version.outputs.VERSION_CODE }} -PVERSION_NAME=${{ steps.version.outputs.VERSION_NAME }}
+
+      - name: Sign Apk
+        uses: r0adkll/sign-android-release@v1
+        id: sign_apk
+        with:
+          releaseDirectory: app/build/outputs/apk/release
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+        env:
+          BUILD_TOOLS_VERSION: "34.0.0"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.VERSION_NAME }}
+          name: Release ${{ steps.version.outputs.VERSION_NAME }}
+          files: ${{ steps.sign_apk.outputs.signedReleaseFile }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
