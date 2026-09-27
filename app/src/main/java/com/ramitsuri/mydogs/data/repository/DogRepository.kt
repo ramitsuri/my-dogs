@@ -1,10 +1,9 @@
 package com.ramitsuri.mydogs.data.repository
 
 import android.content.Context
-import androidx.glance.appwidget.updateAll
 import com.ramitsuri.mydogs.data.db.DogDao
 import com.ramitsuri.mydogs.data.db.DogEntity
-import com.ramitsuri.mydogs.widget.DogWidget
+import com.ramitsuri.mydogs.widget.DogWidget.Companion.updateWidget
 import kotlinx.coroutines.flow.Flow
 
 class DogRepository(
@@ -30,7 +29,8 @@ class DogRepository(
 
     private suspend fun updateWidget() {
         try {
-            DogWidget().updateAll(context)
+            val dogs = dogDao.getAllDogsList()
+            context.updateWidget(dogs)
         } catch (_: Exception) {
             // Ignore if widget is not active or added yet
         }
