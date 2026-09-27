@@ -62,6 +62,21 @@ class AddEditDogViewModel(
         _uiState.update { it.copy(fallbackSizeClass = newSizeClass) }
     }
 
+    private fun reset() {
+        _uiState.update {
+            AddEditDogUiState(
+                dogId = null,
+                name = "",
+                birthdayTimestamp = System.currentTimeMillis(),
+                breed = "",
+                fallbackSizeClass = SizeClass.LARGE,
+                availableBreeds = dataset.breeds.map { it.name }.sortedBy { it },
+                isNameError = false,
+                isSaving = false
+            )
+        }
+    }
+
     fun save(onSaved: () -> Unit) {
         val currentState = _uiState.value
         if (currentState.name.isBlank()) {
@@ -90,6 +105,7 @@ class AddEditDogViewModel(
                 repository.update(updatedDog)
             }
             _uiState.update { it.copy(isSaving = false) }
+            reset()
             onSaved()
         }
     }

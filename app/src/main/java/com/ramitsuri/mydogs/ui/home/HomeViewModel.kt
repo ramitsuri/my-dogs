@@ -13,18 +13,18 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import com.ramitsuri.mydogs.domain.formatAge
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 import kotlin.math.max
-import kotlin.math.roundToInt
 
 data class DogUiModel(
     val entity: DogEntity,
     val ageResult: DogAgeResult,
     val formattedBirthday: String,
     val formattedDogAge: String,
-    val formattedHumanAge: String,
     val formattedMythAge: String,
     val formattedBreedAdjustedAge: String
 )
@@ -42,7 +42,9 @@ class HomeViewModel(
     private val calculator: DogAgeCalculator = DogAgeCalculator()
 ) : ViewModel() {
 
-    private val dateFormatter = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
+    private val dateFormatter = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).apply {
+        timeZone = TimeZone.getTimeZone("UTC")
+    }
 
     private val _isAddEditDialogVisible = MutableStateFlow(false)
     private val _dogToEdit = MutableStateFlow<DogEntity?>(null)
@@ -67,23 +69,16 @@ class HomeViewModel(
             )
 
             val formattedBirthday = dateFormatter.format(Date(dog.birthdayTimestamp))
-            val formattedDogAge = if (dogAgeYears < 1.0) {
-                val months = (dogAgeYears * 12).roundToInt()
-                if (months <= 1) "1 month old" else "$months months old"
-            } else {
-                String.format(Locale.getDefault(), "%.1f years old", dogAgeYears)
-            }
+            val formattedDogAge = formatAge(dogAgeYears)
 
-            val formattedHumanAge = "${ageResult.sizeChartHumanAge} human years"
-            val formattedMythAge = "${ageResult.mythAge.roundToInt()} human years (7x myth)"
-            val formattedBreedAdjustedAge = "${ageResult.breedAdjustedHumanAge.roundToInt()} human years"
+            val formattedMythAge = "${formatAge(ageResult.mythAge)} human years (7x myth)"
+            val formattedBreedAdjustedAge = "${formatAge(ageResult.breedAdjustedHumanAge)} human years"
 
             DogUiModel(
                 entity = dog,
                 ageResult = ageResult,
                 formattedBirthday = formattedBirthday,
                 formattedDogAge = formattedDogAge,
-                formattedHumanAge = formattedHumanAge,
                 formattedMythAge = formattedMythAge,
                 formattedBreedAdjustedAge = formattedBreedAdjustedAge
             )

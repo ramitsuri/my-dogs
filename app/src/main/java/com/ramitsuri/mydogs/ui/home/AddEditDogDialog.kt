@@ -17,6 +17,7 @@ import com.ramitsuri.mydogs.data.model.SizeClass
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -28,7 +29,11 @@ fun AddEditDogDialog(
     var showDatePicker by remember { mutableStateOf(false) }
     var breedExpanded by remember { mutableStateOf(false) }
 
-    val dateFormatter = remember { SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()) }
+    val dateFormatter = remember {
+        SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).apply {
+            timeZone = TimeZone.getTimeZone("UTC")
+        }
+    }
 
     AlertDialog(
         onDismissRequest = onDismiss,

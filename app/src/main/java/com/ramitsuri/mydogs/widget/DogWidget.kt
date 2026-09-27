@@ -36,31 +36,34 @@ import com.ramitsuri.mydogs.MainActivity
 import com.ramitsuri.mydogs.data.db.DogDatabase
 import com.ramitsuri.mydogs.data.model.SizeClass
 import com.ramitsuri.mydogs.domain.DogAgeCalculator
+import com.ramitsuri.mydogs.domain.formatAge
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 import kotlin.math.max
-import kotlin.math.roundToInt
 
 data class DogWidgetModel(
     val id: String,
     val name: String,
     val formattedDogAge: String,
     val formattedBirthday: String,
-    val formattedHumanAge: String,
     val formattedBreedAdjustedAge: String
 )
 
 class DogWidget : GlanceAppWidget() {
     override val sizeMode: SizeMode = SizeMode.Exact
 
-    private val dateFormatter = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
+    private val dateFormatter = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).apply {
+        timeZone = TimeZone.getTimeZone("UTC")
+    }
     private val calculator = DogAgeCalculator()
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         val dogs = try {
             DogDatabase.getDatabase(context).dogDao().getAllDogsList()
-        } catch (_: Exception) {
+        } catch (e: Exception) {
+            e.printStackTrace()
             emptyList()
         }
 
@@ -77,22 +80,15 @@ class DogWidget : GlanceAppWidget() {
             )
 
             val formattedBirthday = dateFormatter.format(Date(dog.birthdayTimestamp))
-            val formattedDogAge = if (dogAgeYears < 1.0) {
-                val months = (dogAgeYears * 12).roundToInt()
-                if (months <= 1) "1 month old" else "$months months old"
-            } else {
-                String.format(Locale.getDefault(), "%.1f years old", dogAgeYears)
-            }
-            val formattedHumanAge = "${ageResult.sizeChartHumanAge} human years"
+            val formattedDogAge = formatAge(dogAgeYears)
             val formattedBreedAdjustedAge =
-                "${ageResult.breedAdjustedHumanAge.roundToInt()} human years"
+                "${formatAge(ageResult.breedAdjustedHumanAge)}"
 
             DogWidgetModel(
                 id = dog.id,
                 name = dog.name,
                 formattedDogAge = formattedDogAge,
                 formattedBirthday = "Birthday: $formattedBirthday",
-                formattedHumanAge = "Size Chart: $formattedHumanAge",
                 formattedBreedAdjustedAge = formattedBreedAdjustedAge
             )
         }
@@ -178,26 +174,13 @@ class DogWidget : GlanceAppWidget() {
                                     )
                                 )
                                 Spacer(modifier = GlanceModifier.height(2.dp))
-                                Row(
-                                    modifier = GlanceModifier.fillMaxWidth(),
-                                    horizontalAlignment = Alignment.Horizontal.Start
-                                ) {
-                                    Text(
-                                        text = dog.formattedBirthday,
-                                        style = TextStyle(
-                                            fontSize = 10.sp,
-                                            color = textColor
-                                        )
+                                Text(
+                                    text = dog.formattedBirthday,
+                                    style = TextStyle(
+                                        fontSize = 10.sp,
+                                        color = textColor
                                     )
-                                    Spacer(modifier = GlanceModifier.width(6.dp))
-                                    Text(
-                                        text = dog.formattedHumanAge,
-                                        style = TextStyle(
-                                            fontSize = 10.sp,
-                                            color = textColor
-                                        )
-                                    )
-                                }
+                                )
                             }
                             if (index != dogs.lastIndex) {
                                 Spacer(modifier = GlanceModifier.height(12.dp))

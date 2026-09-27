@@ -7,6 +7,27 @@ import kotlin.math.ln
 import kotlin.math.max
 import kotlin.math.roundToInt
 
+fun formatAge(years: Double): String {
+    val totalMonths = max(0.0, years * 12.0).roundToInt()
+    if (totalMonths == 0) {
+        return "0 months"
+    }
+    val totalYears = totalMonths / 12
+    val remainingMonths = totalMonths % 12
+
+    val parts = mutableListOf<String>()
+    if (totalYears > 0) {
+        parts.add(if (totalYears == 1) "1 year" else "$totalYears years")
+    }
+    if (remainingMonths > 0) {
+        parts.add(if (remainingMonths == 1) "1 month" else "$remainingMonths months")
+    }
+    if (parts.isEmpty()) {
+        parts.add("0 months")
+    }
+    return parts.joinToString(", ")
+}
+
 data class DogAgeResult(
     val dogAgeYears: Double,
     val breedName: String?,

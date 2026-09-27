@@ -32,7 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import kotlin.math.roundToInt
+import com.ramitsuri.mydogs.domain.formatAge
 
 @Composable
 fun DogDetailDialog(
@@ -166,17 +166,12 @@ fun DogDetailDialog(
                         HorizontalDivider()
                         AgeComparisonRow(
                             label = "Breed-Adjusted Age",
-                            value = "${ageResult.breedAdjustedHumanAge.roundToInt()} human years",
+                            value = "${formatAge(ageResult.breedAdjustedHumanAge)} human years",
                             description = "Based on DNA & physiological aging models"
                         )
                         AgeComparisonRow(
-                            label = "Size Chart Age",
-                            value = "${ageResult.sizeChartHumanAge} human years",
-                            description = "Based on AVMA size-category life stages"
-                        )
-                        AgeComparisonRow(
                             label = "Traditional 7x Myth",
-                            value = dog.formattedMythAge,
+                            value = "${formatAge(ageResult.mythAge)} human years",
                             description = "Old rule of thumb (7 human years per dog year)"
                         )
                     }

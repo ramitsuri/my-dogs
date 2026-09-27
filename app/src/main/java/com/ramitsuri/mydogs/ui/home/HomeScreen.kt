@@ -167,7 +167,7 @@ fun EmptyState(onAddClicked: () -> Unit) {
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = "Add your furry family members to track their true biological age, life stage, and health milestones based on modern veterinary science.",
+            text = "Add your furry family members to track their true biological age and health milestones based on modern veterinary science.",
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -289,27 +289,6 @@ fun DogCard(
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
-
-                    // Life stage badge
-                    Surface(
-                        shape = MaterialTheme.shapes.small,
-                        color = when (dog.ageResult.lifeStage.lowercase()) {
-                            "puppy" -> MaterialTheme.colorScheme.tertiaryContainer
-                            "senior" -> MaterialTheme.colorScheme.errorContainer
-                            else -> MaterialTheme.colorScheme.primaryContainer
-                        }
-                    ) {
-                        Text(
-                            text = dog.ageResult.lifeStage.uppercase(),
-                            style = MaterialTheme.typography.labelSmall,
-                            color = when (dog.ageResult.lifeStage.lowercase()) {
-                                "puppy" -> MaterialTheme.colorScheme.onTertiaryContainer
-                                "senior" -> MaterialTheme.colorScheme.onErrorContainer
-                                else -> MaterialTheme.colorScheme.onPrimaryContainer
-                            },
-                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
-                        )
-                    }
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -323,21 +302,11 @@ fun DogCard(
                         color = MaterialTheme.colorScheme.primary
                     )
                     Spacer(modifier = Modifier.height(4.dp))
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(
-                            text = "Age: ${dog.formattedDogAge}",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                        Text(
-                            text = "Size Chart: ${dog.formattedHumanAge}",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
+                    Text(
+                        text = "Age: ${dog.formattedDogAge}",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 }
             }
         }
