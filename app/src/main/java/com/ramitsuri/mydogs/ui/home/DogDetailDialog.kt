@@ -166,12 +166,12 @@ fun DogDetailDialog(
                         HorizontalDivider()
                         AgeComparisonRow(
                             label = "Breed-Adjusted Age",
-                            value = "${formatAge(ageResult.breedAdjustedHumanAge)} human years",
+                            value = formatAge(ageResult.breedAdjustedHumanAge),
                             description = "Based on DNA & physiological aging models"
                         )
                         AgeComparisonRow(
                             label = "Traditional 7x Myth",
-                            value = "${formatAge(ageResult.mythAge)} human years",
+                            value = formatAge(ageResult.mythAge),
                             description = "Old rule of thumb (7 human years per dog year)"
                         )
                     }

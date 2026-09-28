@@ -71,8 +71,8 @@ class HomeViewModel(
             val formattedBirthday = dateFormatter.format(Date(dog.birthdayTimestamp))
             val formattedDogAge = formatAge(dogAgeYears)
 
-            val formattedMythAge = "${formatAge(ageResult.mythAge)} human years (7x myth)"
-            val formattedBreedAdjustedAge = "${formatAge(ageResult.breedAdjustedHumanAge)} human years"
+            val formattedMythAge = "${formatAge(ageResult.mythAge)} (7x myth)"
+            val formattedBreedAdjustedAge = formatAge(ageResult.breedAdjustedHumanAge)
 
             DogUiModel(
                 entity = dog,
