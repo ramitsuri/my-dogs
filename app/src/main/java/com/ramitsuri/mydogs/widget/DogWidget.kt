@@ -113,55 +113,60 @@ class DogWidget : GlanceAppWidget() {
                 LazyColumn(
                     modifier = GlanceModifier.fillMaxSize()
                 ) {
-                    itemsIndexed(dogs) { index, dog ->
-                        Column(
-                            modifier = GlanceModifier
-                                .fillMaxWidth()
-                                .padding(vertical = 4.dp)
-                                .background(surfaceVariantColor)
-                                .cornerRadius(12.dp)
-                                .padding(8.dp)
-                        ) {
-                            Text(
-                                text = dog.name,
-                                style = TextStyle(
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 14.sp,
-                                    color = textColor
+                    dogs.forEachIndexed { index, dog ->
+                        item {
+                            Column(
+                                modifier = GlanceModifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 4.dp)
+                                    .background(surfaceVariantColor)
+                                    .cornerRadius(12.dp)
+                                    .padding(8.dp)
+                            ) {
+                                Text(
+                                    text = dog.name,
+                                    style = TextStyle(
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 14.sp,
+                                        color = textColor
+                                    )
                                 )
-                            )
-                            Spacer(modifier = GlanceModifier.height(2.dp))
-                            // Prominent Breed-Adjusted Age
-                            Text(
-                                text = dog.formattedBreedAdjustedAge,
-                                style = TextStyle(
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 18.sp,
-                                    color = primaryColor
+                                Spacer(modifier = GlanceModifier.height(2.dp))
+                                // Prominent Breed-Adjusted Age
+                                Text(
+                                    text = dog.formattedBreedAdjustedAge,
+                                    style = TextStyle(
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 18.sp,
+                                        color = primaryColor
+                                    )
                                 )
-                            )
 
-                            // Show extra details if not compact
-                            if (!isCompact) {
-                                Spacer(modifier = GlanceModifier.height(2.dp))
-                                Text(
-                                    text = dog.formattedDogAge,
-                                    style = TextStyle(
-                                        fontSize = 11.sp,
-                                        color = textColor
+                                // Show extra details if not compact
+                                if (!isCompact) {
+                                    Spacer(modifier = GlanceModifier.height(2.dp))
+                                    Text(
+                                        text = dog.formattedDogAge,
+                                        style = TextStyle(
+                                            fontSize = 11.sp,
+                                            color = textColor
+                                        )
                                     )
-                                )
-                                Spacer(modifier = GlanceModifier.height(2.dp))
-                                Text(
-                                    text = dog.formattedBirthday,
-                                    style = TextStyle(
-                                        fontSize = 10.sp,
-                                        color = textColor
+                                    Spacer(modifier = GlanceModifier.height(2.dp))
+                                    Text(
+                                        text = dog.formattedBirthday,
+                                        style = TextStyle(
+                                            fontSize = 10.sp,
+                                            color = textColor
+                                        )
                                     )
-                                )
+                                }
                             }
-                            if (index != dogs.lastIndex) {
-                                Spacer(modifier = GlanceModifier.height(12.dp))
+                        }
+
+                        if (index != dogs.lastIndex) {
+                            item {
+                                Spacer(modifier = GlanceModifier.height(8.dp))
                             }
                         }
                     }
