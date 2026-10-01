@@ -1,0 +1,157 @@
+{
+  "_meta": {
+    "description": "Reference data for breed- and size-adjusted dog-to-human age conversion.",
+    "sources": [
+      "Wang, T. et al. (2020) 'Quantitative Translation of Dog-to-Human Aging by Conserved Remodeling of the DNA Methylome.' Cell Systems 11(2), 176-185. (epigenetic formula, calibrated on Labrador Retrievers)",
+      "AVMA-style veterinary life-stage tables by adult size class (traditional, non-molecular reference chart)"
+    ]
+  },
+  "sizeClasses": {
+    "small": {
+      "label": "Small",
+      "weightRangeLb": [0, 20],
+      "defaultLifespanYears": 14,
+      "lifeStageChart": {
+        "agePoints":  [0, 1, 2, 3, 5, 8, 10, 12, 15],
+        "humanYears": [0, 15, 24, 28, 36, 48, 56, 64, 76]
+      }
+    },
+    "medium": {
+      "label": "Medium",
+      "weightRangeLb": [21, 50],
+      "defaultLifespanYears": 13,
+      "lifeStageChart": {
+        "agePoints":  [0, 1, 2, 3, 5, 8, 10, 12, 15],
+        "humanYears": [0, 15, 24, 28, 36, 51, 60, 69, 83]
+      }
+    },
+    "large": {
+      "label": "Large",
+      "weightRangeLb": [51, 90],
+      "defaultLifespanYears": 11,
+      "lifeStageChart": {
+        "agePoints":  [0, 1, 2, 3, 5, 8, 10, 12, 15],
+        "humanYears": [0, 14, 22, 31, 41, 57, 66, 78, 93]
+      }
+    },
+    "giant": {
+      "label": "Giant",
+      "weightRangeLb": [91, null],
+      "defaultLifespanYears": 8,
+      "lifeStageChart": {
+        "agePoints":  [0, 1, 2, 3, 5, 8, 10, 12, 15],
+        "humanYears": [0, 12, 22, 31, 42, 64, 78, 96, 110]
+      }
+    }
+  },
+  "breeds": [
+    {"name":"Chihuahua","lifespanYears":15,"sizeClass":"small"},
+    {"name":"Yorkshire Terrier","lifespanYears":14,"sizeClass":"small"},
+    {"name":"Pomeranian","lifespanYears":14,"sizeClass":"small"},
+    {"name":"Toy Poodle","lifespanYears":14,"sizeClass":"small"},
+    {"name":"Maltese","lifespanYears":14,"sizeClass":"small"},
+    {"name":"Papillon","lifespanYears":14,"sizeClass":"small"},
+    {"name":"Pug","lifespanYears":12,"sizeClass":"small"},
+    {"name":"Shih Tzu","lifespanYears":14,"sizeClass":"small"},
+    {"name":"Chinese Crested","lifespanYears":13,"sizeClass":"small"},
+    {"name":"Italian Greyhound","lifespanYears":14,"sizeClass":"small"},
+    {"name":"Japanese Chin","lifespanYears":13,"sizeClass":"small"},
+    {"name":"Havanese","lifespanYears":14,"sizeClass":"small"},
+    {"name":"Brussels Griffon","lifespanYears":13,"sizeClass":"small"},
+    {"name":"Miniature Pinscher","lifespanYears":14,"sizeClass":"small"},
+    {"name":"Affenpinscher","lifespanYears":13,"sizeClass":"small"},
+    {"name":"Pekingese","lifespanYears":13,"sizeClass":"small"},
+    {"name":"Miniature Dachshund","lifespanYears":14,"sizeClass":"small"},
+    {"name":"Boston Terrier","lifespanYears":12,"sizeClass":"small"},
+    {"name":"Cavalier King Charles Spaniel","lifespanYears":12,"sizeClass":"small"},
+    {"name":"Miniature Schnauzer","lifespanYears":13,"sizeClass":"small"},
+    {"name":"West Highland White Terrier","lifespanYears":13,"sizeClass":"small"},
+    {"name":"Cairn Terrier","lifespanYears":13,"sizeClass":"small"},
+    {"name":"Jack Russell Terrier","lifespanYears":14,"sizeClass":"small"},
+    {"name":"Bichon Frise","lifespanYears":14,"sizeClass":"small"},
+    {"name":"Scottish Terrier","lifespanYears":12,"sizeClass":"small"},
+    {"name":"Rat Terrier","lifespanYears":15,"sizeClass":"small"},
+    {"name":"Toy Fox Terrier","lifespanYears":13,"sizeClass":"small"},
+    {"name":"Border Terrier","lifespanYears":14,"sizeClass":"small"},
+    {"name":"Lhasa Apso","lifespanYears":14,"sizeClass":"small"},
+    {"name":"Norfolk Terrier","lifespanYears":13,"sizeClass":"small"},
+    {"name":"Silky Terrier","lifespanYears":14,"sizeClass":"small"},
+    {"name":"French Bulldog","lifespanYears":10,"sizeClass":"small"},
+    {"name":"Shiba Inu","lifespanYears":15,"sizeClass":"small"},
+    {"name":"Standard Dachshund","lifespanYears":13,"sizeClass":"small"},
+
+    {"name":"Beagle","lifespanYears":13,"sizeClass":"medium"},
+    {"name":"Pembroke Welsh Corgi","lifespanYears":12,"sizeClass":"medium"},
+    {"name":"Cardigan Welsh Corgi","lifespanYears":13,"sizeClass":"medium"},
+    {"name":"Cocker Spaniel","lifespanYears":12,"sizeClass":"medium"},
+    {"name":"Border Collie","lifespanYears":13,"sizeClass":"medium"},
+    {"name":"Australian Shepherd","lifespanYears":13,"sizeClass":"medium"},
+    {"name":"Brittany","lifespanYears":13,"sizeClass":"medium"},
+    {"name":"Basset Hound","lifespanYears":12,"sizeClass":"medium"},
+    {"name":"English Springer Spaniel","lifespanYears":13,"sizeClass":"medium"},
+    {"name":"Shetland Sheepdog","lifespanYears":13,"sizeClass":"medium"},
+    {"name":"American Staffordshire Terrier","lifespanYears":12,"sizeClass":"medium"},
+    {"name":"American Pit Bull Terrier","lifespanYears":12,"sizeClass":"medium"},
+    {"name":"Chow Chow","lifespanYears":11,"sizeClass":"medium"},
+    {"name":"Standard Schnauzer","lifespanYears":13,"sizeClass":"medium"},
+    {"name":"Siberian Husky","lifespanYears":13,"sizeClass":"medium"},
+    {"name":"Portuguese Water Dog","lifespanYears":12,"sizeClass":"medium"},
+    {"name":"Vizsla","lifespanYears":13,"sizeClass":"medium"},
+    {"name":"Keeshond","lifespanYears":13,"sizeClass":"medium"},
+    {"name":"Finnish Spitz","lifespanYears":14,"sizeClass":"medium"},
+    {"name":"Norwegian Elkhound","lifespanYears":13,"sizeClass":"medium"},
+    {"name":"Samoyed","lifespanYears":12,"sizeClass":"medium"},
+    {"name":"Basenji","lifespanYears":13,"sizeClass":"medium"},
+    {"name":"Whippet","lifespanYears":13,"sizeClass":"medium"},
+    {"name":"English Bulldog","lifespanYears":9,"sizeClass":"medium"},
+    {"name":"Bull Terrier","lifespanYears":12,"sizeClass":"medium"},
+    {"name":"Staffordshire Bull Terrier","lifespanYears":13,"sizeClass":"medium"},
+    {"name":"Australian Cattle Dog","lifespanYears":13,"sizeClass":"medium"},
+    {"name":"Welsh Springer Spaniel","lifespanYears":13,"sizeClass":"medium"},
+    {"name":"American Eskimo Dog","lifespanYears":13,"sizeClass":"medium"},
+    {"name":"Xoloitzcuintli","lifespanYears":14,"sizeClass":"medium"},
+
+    {"name":"Labrador Retriever","lifespanYears":12,"sizeClass":"large"},
+    {"name":"Golden Retriever","lifespanYears":11,"sizeClass":"large"},
+    {"name":"German Shepherd","lifespanYears":10,"sizeClass":"large"},
+    {"name":"Boxer","lifespanYears":10,"sizeClass":"large"},
+    {"name":"Doberman Pinscher","lifespanYears":11,"sizeClass":"large"},
+    {"name":"Rottweiler","lifespanYears":9,"sizeClass":"large"},
+    {"name":"Weimaraner","lifespanYears":11,"sizeClass":"large"},
+    {"name":"Bloodhound","lifespanYears":10,"sizeClass":"large"},
+    {"name":"Standard Poodle","lifespanYears":12,"sizeClass":"large"},
+    {"name":"Belgian Malinois","lifespanYears":12,"sizeClass":"large"},
+    {"name":"Akita","lifespanYears":11,"sizeClass":"large"},
+    {"name":"Rhodesian Ridgeback","lifespanYears":11,"sizeClass":"large"},
+    {"name":"Bernese Mountain Dog","lifespanYears":8,"sizeClass":"large"},
+    {"name":"Alaskan Malamute","lifespanYears":11,"sizeClass":"large"},
+    {"name":"Chesapeake Bay Retriever","lifespanYears":11,"sizeClass":"large"},
+    {"name":"American Bulldog","lifespanYears":12,"sizeClass":"large"},
+    {"name":"German Shorthaired Pointer","lifespanYears":12,"sizeClass":"large"},
+    {"name":"Gordon Setter","lifespanYears":11,"sizeClass":"large"},
+    {"name":"Irish Setter","lifespanYears":12,"sizeClass":"large"},
+    {"name":"English Setter","lifespanYears":12,"sizeClass":"large"},
+    {"name":"Collie","lifespanYears":13,"sizeClass":"large"},
+    {"name":"Old English Sheepdog","lifespanYears":11,"sizeClass":"large"},
+    {"name":"Airedale Terrier","lifespanYears":11,"sizeClass":"large"},
+    {"name":"Catahoula Leopard Dog","lifespanYears":12,"sizeClass":"large"},
+
+    {"name":"Great Dane","lifespanYears":8,"sizeClass":"giant"},
+    {"name":"English Mastiff","lifespanYears":7,"sizeClass":"giant"},
+    {"name":"Saint Bernard","lifespanYears":8,"sizeClass":"giant"},
+    {"name":"Newfoundland","lifespanYears":9,"sizeClass":"giant"},
+    {"name":"Irish Wolfhound","lifespanYears":7,"sizeClass":"giant"},
+    {"name":"Great Pyrenees","lifespanYears":10,"sizeClass":"giant"},
+    {"name":"Leonberger","lifespanYears":8,"sizeClass":"giant"},
+    {"name":"Tibetan Mastiff","lifespanYears":10,"sizeClass":"giant"},
+    {"name":"Cane Corso","lifespanYears":10,"sizeClass":"giant"},
+    {"name":"Greater Swiss Mountain Dog","lifespanYears":8,"sizeClass":"giant"},
+    {"name":"Anatolian Shepherd","lifespanYears":11,"sizeClass":"giant"},
+    {"name":"Dogue de Bordeaux","lifespanYears":6,"sizeClass":"giant"},
+    {"name":"Bullmastiff","lifespanYears":8,"sizeClass":"giant"},
+    {"name":"Neapolitan Mastiff","lifespanYears":7,"sizeClass":"giant"},
+    {"name":"Scottish Deerhound","lifespanYears":8,"sizeClass":"giant"},
+    {"name":"Kuvasz","lifespanYears":10,"sizeClass":"giant"},
+    {"name":"Landseer","lifespanYears":9,"sizeClass":"giant"}
+  ]
+}

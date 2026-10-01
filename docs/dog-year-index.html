@@ -1,0 +1,580 @@
+<title>Dog-Year Index</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#EEF0E6;
+    --surface:#FBFBF5;
+    --surface-2:#F2F2E9;
+    --line:#D8DAC9;
+    --ink:#212B1D;
+    --muted:#5C6656;
+    --accent:#B9812E;
+    --accent-ink:#4A3410;
+    --small:#3F7A82;
+    --medium:#3E6B8C;
+    --large:#6B4F8C;
+    --giant:#8C4F6B;
+    --puppy:#4C8A54;
+    --senior:#B9812E;
+    --shadow: 0 1px 2px rgba(33,43,29,0.06), 0 8px 24px -12px rgba(33,43,29,0.18);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#12160F;
+      --surface:#191E14;
+      --surface-2:#1F251A;
+      --line:#333A2A;
+      --ink:#EAE8DB;
+      --muted:#9AA08D;
+      --accent:#D9A54B;
+      --accent-ink:#2A1E0C;
+      --small:#5FADB6;
+      --medium:#6FA0C9;
+      --large:#A889C7;
+      --giant:#C78AA0;
+      --puppy:#79C182;
+      --senior:#D9A54B;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -12px rgba(0,0,0,0.6);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#12160F;
+    --surface:#191E14;
+    --surface-2:#1F251A;
+    --line:#333A2A;
+    --ink:#EAE8DB;
+    --muted:#9AA08D;
+    --accent:#D9A54B;
+    --accent-ink:#2A1E0C;
+    --small:#5FADB6;
+    --medium:#6FA0C9;
+    --large:#A889C7;
+    --giant:#C78AA0;
+    --puppy:#79C182;
+    --senior:#D9A54B;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -12px rgba(0,0,0,0.6);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Source Sans 3", ui-sans-serif, system-ui, sans-serif;
+    padding:2.5rem 1.5rem 4rem;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:920px; margin:0 auto;}
+
+  .eyebrow{
+    font-family:"IBM Plex Mono", ui-monospace, monospace;
+    font-size:0.72rem;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin:0 0 0.6rem;
+  }
+  h1{
+    font-family:"Fraunces", Georgia, serif;
+    font-weight:600;
+    font-size:clamp(1.9rem, 4vw, 2.6rem);
+    line-height:1.08;
+    letter-spacing:-0.01em;
+    margin:0 0 0.55rem;
+    text-wrap:balance;
+    color:var(--ink);
+  }
+  .lede{
+    max-width:62ch;
+    color:var(--muted);
+    font-size:1.02rem;
+    line-height:1.55;
+    margin:0 0 2.1rem;
+  }
+  .lede b{color:var(--ink); font-weight:600;}
+
+  .grid{
+    display:grid;
+    grid-template-columns: 1fr 1.15fr;
+    gap:1.25rem;
+    align-items:start;
+  }
+  @media (max-width: 760px){ .grid{ grid-template-columns: 1fr; } }
+
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:1.6rem;
+    box-shadow:var(--shadow);
+  }
+
+  label{
+    display:block;
+    font-size:0.78rem;
+    font-weight:600;
+    letter-spacing:0.02em;
+    color:var(--muted);
+    margin-bottom:0.4rem;
+  }
+  .field{margin-bottom:1.3rem;}
+  .field:last-child{margin-bottom:0;}
+  .hint{
+    font-size:0.8rem;
+    color:var(--muted);
+    margin-top:0.4rem;
+    line-height:1.4;
+  }
+  .hint.warn{color:var(--accent);}
+
+  input[type="text"], input[type="number"], select{
+    width:100%;
+    font-family:"Source Sans 3", sans-serif;
+    font-size:1rem;
+    padding:0.65rem 0.75rem;
+    border:1px solid var(--line);
+    border-radius:9px;
+    background:var(--surface-2);
+    color:var(--ink);
+    transition:border-color 0.15s ease;
+  }
+  input[type="number"]{font-family:"IBM Plex Mono", monospace;}
+  input:focus, select:focus{
+    outline:none;
+    border-color:var(--accent);
+    box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
+  }
+  select{appearance:auto;}
+  select[disabled]{opacity:0.6; cursor:not-allowed;}
+
+  .agerow{display:grid; grid-template-columns:1fr auto; gap:0.6rem; align-items:end;}
+  .unit{
+    display:flex; border:1px solid var(--line); border-radius:9px; overflow:hidden; height:calc(1rem*1.4 + 1.3rem + 2px);
+  }
+  .unit button{
+    font-family:"IBM Plex Mono", monospace;
+    font-size:0.78rem;
+    padding:0 0.7rem;
+    border:none;
+    background:var(--surface-2);
+    color:var(--muted);
+    cursor:pointer;
+  }
+  .unit button.active{background:var(--accent); color:var(--accent-ink); font-weight:600;}
+
+  .badge{
+    display:inline-flex;
+    align-items:center;
+    gap:0.4rem;
+    font-family:"IBM Plex Mono", monospace;
+    font-size:0.72rem;
+    letter-spacing:0.03em;
+    padding:0.28rem 0.6rem;
+    border-radius:999px;
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    color:var(--muted);
+  }
+  .dot{width:0.5rem; height:0.5rem; border-radius:50%; display:inline-block;}
+
+  .result-head{
+    display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; margin-bottom:0.3rem;
+  }
+  .stage-pill{
+    font-family:"IBM Plex Mono", monospace;
+    font-size:0.72rem;
+    font-weight:600;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    padding:0.32rem 0.65rem;
+    border-radius:999px;
+    color:var(--accent-ink);
+  }
+
+  .headline{
+    font-family:"Fraunces", Georgia, serif;
+    font-weight:600;
+    font-size:3.6rem;
+    line-height:1;
+    color:var(--accent);
+    margin:0.3rem 0 0;
+    font-variant-numeric:tabular-nums;
+  }
+  .headline span{font-size:1.3rem; font-weight:500; color:var(--muted); margin-left:0.3rem;}
+  .headline-sub{font-size:0.88rem; color:var(--muted); margin:0.35rem 0 1.5rem;}
+  .headline-sub b{color:var(--ink);}
+
+  .ruler{position:relative; height:34px; margin:0.4rem 0 0.35rem;}
+  .track{
+    position:absolute; top:14px; left:0; right:0; height:6px;
+    background:var(--surface-2); border:1px solid var(--line); border-radius:999px; overflow:hidden;
+  }
+  .fill{position:absolute; top:0; left:0; height:100%; background:var(--accent); border-radius:999px;}
+  .tick{
+    position:absolute; top:6px; width:1px; height:22px; background:var(--line);
+  }
+  .marker{
+    position:absolute; top:6px; width:14px; height:14px; margin-left:-7px;
+    border-radius:50%; background:var(--accent); border:3px solid var(--surface);
+    box-shadow:0 0 0 1px var(--line);
+  }
+  .ruler-labels{
+    display:flex; justify-content:space-between;
+    font-family:"IBM Plex Mono", monospace;
+    font-size:0.68rem; letter-spacing:0.04em; text-transform:uppercase;
+    color:var(--muted); margin-bottom:1.4rem;
+  }
+
+  .compare{
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:0.7rem;
+    border-top:1px solid var(--line); padding-top:1.2rem;
+  }
+  .compare .stat{background:var(--surface-2); border:1px solid var(--line); border-radius:10px; padding:0.7rem 0.75rem;}
+  .compare .stat .k{font-size:0.68rem; letter-spacing:0.04em; text-transform:uppercase; color:var(--muted); font-family:"IBM Plex Mono", monospace;}
+  .compare .stat .v{font-family:"IBM Plex Mono", monospace; font-size:1.25rem; font-weight:500; margin-top:0.2rem; font-variant-numeric:tabular-nums;}
+  .compare .stat.dim .v{color:var(--muted);}
+  .compare .stat.hero{border-color:var(--accent);}
+  .compare .stat.hero .v{color:var(--accent);}
+
+  .method{
+    margin-top:1.6rem;
+    font-size:0.85rem;
+    line-height:1.55;
+    color:var(--muted);
+  }
+  .method p{margin:0 0 0.6rem;}
+  .method b{color:var(--ink); font-weight:600;}
+
+  details{
+    margin-top:1.75rem;
+    border-top:1px solid var(--line);
+    padding-top:1.1rem;
+  }
+  summary{
+    cursor:pointer;
+    font-weight:600;
+    font-size:0.9rem;
+    color:var(--ink);
+    list-style:none;
+  }
+  summary::-webkit-details-marker{display:none;}
+  summary:before{
+    content:"\25B8";
+    display:inline-block;
+    margin-right:0.5rem;
+    color:var(--accent);
+    transition:transform 0.15s ease;
+  }
+  details[open] summary:before{transform:rotate(90deg);}
+
+  .tablewrap{overflow-x:auto; margin-top:1rem; border:1px solid var(--line); border-radius:10px;}
+  table{width:100%; border-collapse:collapse; font-size:0.86rem;}
+  th, td{padding:0.5rem 0.75rem; text-align:left; border-bottom:1px solid var(--line); white-space:nowrap;}
+  th{
+    font-family:"IBM Plex Mono", monospace;
+    font-size:0.68rem; letter-spacing:0.04em; text-transform:uppercase;
+    color:var(--muted); background:var(--surface-2); position:sticky; top:0;
+  }
+  td.num{font-family:"IBM Plex Mono", monospace; font-variant-numeric:tabular-nums;}
+  tr:last-child td{border-bottom:none;}
+  .catchip{
+    display:inline-flex; align-items:center; gap:0.35rem;
+    font-family:"IBM Plex Mono", monospace; font-size:0.72rem;
+  }
+
+  footer{
+    margin-top:2.2rem;
+    font-size:0.78rem;
+    color:var(--muted);
+    line-height:1.5;
+  }
+  a{color:var(--accent);}
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;}
+  }
+</style>
+
+<div class="wrap">
+  <p class="eyebrow">Aging research, applied</p>
+  <h1>Dog-Year Index</h1>
+  <p class="lede">The "multiply by seven" rule isn't real. This estimates your dog's human-equivalent age from a 2020 DNA-methylation study, scaled by your breed's actual expected lifespan — since a Great Dane and a Chihuahua age at very different rates.</p>
+
+  <div class="grid">
+    <div class="card">
+      <div class="field">
+        <label for="breed">Breed</label>
+        <input type="text" id="breed" list="breedlist" placeholder="Start typing — e.g. Labrador Retriever" autocomplete="off">
+        <datalist id="breedlist"></datalist>
+        <p class="hint" id="breedHint">Matched breeds fill in their own average lifespan below.</p>
+      </div>
+
+      <div class="field">
+        <label for="size">Size class <span id="autoTag"></span></label>
+        <select id="size">
+          <option value="small">Small (up to ~20 lb)</option>
+          <option value="medium">Medium (~21–50 lb)</option>
+          <option value="large">Large (~51–90 lb)</option>
+          <option value="giant">Giant (90 lb+)</option>
+        </select>
+        <p class="hint">Used only when the breed above isn't in our list — sets a size-typical expected lifespan instead.</p>
+      </div>
+
+      <div class="field">
+        <label for="age">Dog's current age</label>
+        <div class="agerow">
+          <input type="number" id="age" value="3" min="0.08" max="28" step="0.1">
+          <div class="unit">
+            <button type="button" id="unitYears" class="active">years</button>
+            <button type="button" id="unitMonths">months</button>
+          </div>
+        </div>
+        <p class="hint" id="ageHint"></p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="result-head">
+        <span class="badge" id="breedBadge"><span class="dot" id="breedDot"></span><span id="breedBadgeText">Small breed</span></span>
+        <span class="stage-pill" id="stagePill">Adult</span>
+      </div>
+      <div class="headline" id="headline">28<span>human years</span></div>
+      <p class="headline-sub" id="headlineSub"></p>
+
+      <div class="ruler">
+        <div class="track"><div class="fill" id="fill"></div></div>
+        <div class="tick" id="tickPuppy"></div>
+        <div class="tick" id="tickSenior"></div>
+        <div class="marker" id="marker"></div>
+      </div>
+      <div class="ruler-labels"><span>Birth</span><span id="lifespanLabel">Expected lifespan</span></div>
+
+      <div class="compare">
+        <div class="stat dim">
+          <div class="k">×7 myth</div>
+          <div class="v" id="mythVal">21</div>
+        </div>
+        <div class="stat">
+          <div class="k">Size-chart</div>
+          <div class="v" id="chartVal">30</div>
+        </div>
+        <div class="stat hero">
+          <div class="k">Breed-adjusted</div>
+          <div class="v" id="heroVal">28</div>
+        </div>
+      </div>
+
+      <div class="method">
+        <p><b>Breed-adjusted</b> — human_age = 16 × ln(dog_age × 12 ÷ breed_lifespan) + 31. Derived from Wang et al., <i>Cell Systems</i> 2020, which mapped DNA-methylation drift in Labradors against human aging; scaled here by expected lifespan so faster- and slower-aging breeds shift accordingly.</p>
+        <p><b>Size-chart</b> — interpolated from AVMA-style veterinary life-stage tables by size class, the traditional (non-molecular) reference point.</p>
+      </div>
+
+      <details>
+        <summary id="tableSummary">View the full breed dataset</summary>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Breed</th><th>Size class</th><th>Avg. lifespan</th></tr></thead>
+            <tbody id="breedTableBody"></tbody>
+          </table>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <footer>
+    Estimates only — individual health, spay/neuter status, and genetics move the real number. The methylation formula is most reliable from about 2 months of age onward; very young puppies age too fast for any log curve to capture cleanly.
+  </footer>
+</div>
+
+<script>
+(function(){
+  var BREEDS = [
+    ["Chihuahua",15,"small"],["Yorkshire Terrier",14,"small"],["Pomeranian",14,"small"],
+    ["Toy Poodle",14,"small"],["Maltese",14,"small"],["Papillon",14,"small"],
+    ["Pug",12,"small"],["Shih Tzu",14,"small"],["Chinese Crested",13,"small"],
+    ["Italian Greyhound",14,"small"],["Japanese Chin",13,"small"],["Havanese",14,"small"],
+    ["Brussels Griffon",13,"small"],["Miniature Pinscher",14,"small"],["Affenpinscher",13,"small"],
+    ["Pekingese",13,"small"],["Miniature Dachshund",14,"small"],["Boston Terrier",12,"small"],
+    ["Cavalier King Charles Spaniel",12,"small"],["Miniature Schnauzer",13,"small"],
+    ["West Highland White Terrier",13,"small"],["Cairn Terrier",13,"small"],["Jack Russell Terrier",14,"small"],
+    ["Bichon Frise",14,"small"],["Scottish Terrier",12,"small"],["Rat Terrier",15,"small"],
+    ["Toy Fox Terrier",13,"small"],["Border Terrier",14,"small"],["Lhasa Apso",14,"small"],
+    ["Norfolk Terrier",13,"small"],["Silky Terrier",14,"small"],["French Bulldog",10,"small"],
+    ["Shiba Inu",15,"small"],["Standard Dachshund",13,"small"],
+    ["Beagle",13,"medium"],["Pembroke Welsh Corgi",12,"medium"],["Cardigan Welsh Corgi",13,"medium"],
+    ["Cocker Spaniel",12,"medium"],["Border Collie",13,"medium"],["Australian Shepherd",13,"medium"],
+    ["Brittany",13,"medium"],["Basset Hound",12,"medium"],["English Springer Spaniel",13,"medium"],
+    ["Shetland Sheepdog",13,"medium"],["American Staffordshire Terrier",12,"medium"],
+    ["American Pit Bull Terrier",12,"medium"],["Chow Chow",11,"medium"],["Standard Schnauzer",13,"medium"],
+    ["Siberian Husky",13,"medium"],["Portuguese Water Dog",12,"medium"],["Vizsla",13,"medium"],
+    ["Keeshond",13,"medium"],["Finnish Spitz",14,"medium"],["Norwegian Elkhound",13,"medium"],
+    ["Samoyed",12,"medium"],["Basenji",13,"medium"],["Whippet",13,"medium"],["English Bulldog",9,"medium"],
+    ["Bull Terrier",12,"medium"],["Staffordshire Bull Terrier",13,"medium"],["Australian Cattle Dog",13,"medium"],
+    ["Welsh Springer Spaniel",13,"medium"],["American Eskimo Dog",13,"medium"],["Xoloitzcuintli",14,"medium"],
+    ["Labrador Retriever",12,"large"],["Golden Retriever",11,"large"],["German Shepherd",10,"large"],
+    ["Boxer",10,"large"],["Doberman Pinscher",11,"large"],["Rottweiler",9,"large"],["Weimaraner",11,"large"],
+    ["Bloodhound",10,"large"],["Standard Poodle",12,"large"],["Belgian Malinois",12,"large"],
+    ["Akita",11,"large"],["Rhodesian Ridgeback",11,"large"],["Bernese Mountain Dog",8,"large"],
+    ["Alaskan Malamute",11,"large"],["Chesapeake Bay Retriever",11,"large"],["American Bulldog",12,"large"],
+    ["German Shorthaired Pointer",12,"large"],["Gordon Setter",11,"large"],["Irish Setter",12,"large"],
+    ["English Setter",12,"large"],["Collie",13,"large"],["Old English Sheepdog",11,"large"],
+    ["Airedale Terrier",11,"large"],["Catahoula Leopard Dog",12,"large"],
+    ["Great Dane",8,"giant"],["English Mastiff",7,"giant"],["Saint Bernard",8,"giant"],
+    ["Newfoundland",9,"giant"],["Irish Wolfhound",7,"giant"],["Great Pyrenees",10,"giant"],
+    ["Leonberger",8,"giant"],["Tibetan Mastiff",10,"giant"],["Cane Corso",10,"giant"],
+    ["Greater Swiss Mountain Dog",8,"giant"],["Anatolian Shepherd",11,"giant"],["Dogue de Bordeaux",6,"giant"],
+    ["Bullmastiff",8,"giant"],["Neapolitan Mastiff",7,"giant"],["Scottish Deerhound",8,"giant"],
+    ["Kuvasz",10,"giant"],["Landseer",9,"giant"]
+  ].map(function(r){ return {name:r[0], lifespan:r[1], size:r[2]}; });
+
+  var DEFAULTS = {small:14, medium:13, large:11, giant:8};
+  var SIZE_LABEL = {small:"Small", medium:"Medium", large:"Large", giant:"Giant"};
+  var AGE_PTS  = [0,1,2,3,5,8,10,12,15];
+  var CHART = {
+    small:  [0,15,24,28,36,48,56,64,76],
+    medium: [0,15,24,28,36,51,60,69,83],
+    large:  [0,14,22,31,41,57,66,78,93],
+    giant:  [0,12,22,31,42,64,78,96,110]
+  };
+
+  function interp(xs, ys, x){
+    if (x <= xs[0]) return ys[0];
+    var n = xs.length;
+    if (x >= xs[n-1]){
+      var s = (ys[n-1]-ys[n-2])/(xs[n-1]-xs[n-2]);
+      return ys[n-1] + s*(x-xs[n-1]);
+    }
+    for (var i=0;i<n-1;i++){
+      if (x >= xs[i] && x <= xs[i+1]){
+        var t = (x-xs[i])/(xs[i+1]-xs[i]);
+        return ys[i] + t*(ys[i+1]-ys[i]);
+      }
+    }
+    return ys[n-1];
+  }
+
+  var breedInput = document.getElementById("breed");
+  var breedList = document.getElementById("breedlist");
+  var sizeSelect = document.getElementById("size");
+  var ageInput = document.getElementById("age");
+  var unitYears = document.getElementById("unitYears");
+  var unitMonths = document.getElementById("unitMonths");
+  var autoTag = document.getElementById("autoTag");
+  var breedHint = document.getElementById("breedHint");
+
+  BREEDS.slice().sort(function(a,b){return a.name.localeCompare(b.name);}).forEach(function(b){
+    var opt = document.createElement("option");
+    opt.value = b.name;
+    breedList.appendChild(opt);
+  });
+
+  var tbody = document.getElementById("breedTableBody");
+  var byCat = {small:[], medium:[], large:[], giant:[]};
+  BREEDS.forEach(function(b){ byCat[b.size].push(b); });
+  ["small","medium","large","giant"].forEach(function(cat){
+    byCat[cat].sort(function(a,b){return a.name.localeCompare(b.name);}).forEach(function(b){
+      var tr = document.createElement("tr");
+      tr.innerHTML = '<td>'+b.name+'</td>' +
+        '<td><span class="catchip"><span class="dot" style="width:.5rem;height:.5rem;border-radius:50%;background:var(--'+cat+')"></span>'+SIZE_LABEL[cat]+'</span></td>' +
+        '<td class="num">'+b.lifespan+' yrs</td>';
+      tbody.appendChild(tr);
+    });
+  });
+  document.getElementById("tableSummary").textContent = "View the full breed dataset (" + BREEDS.length + " breeds)";
+
+  var unit = "years";
+  unitYears.addEventListener("click", function(){
+    if (unit==="years") return;
+    ageInput.value = (parseFloat(ageInput.value||0)/12).toFixed(1);
+    unit="years"; unitYears.classList.add("active"); unitMonths.classList.remove("active");
+    ageInput.step="0.1"; ageInput.max="28";
+    render();
+  });
+  unitMonths.addEventListener("click", function(){
+    if (unit==="months") return;
+    ageInput.value = (parseFloat(ageInput.value||0)*12).toFixed(0);
+    unit="months"; unitMonths.classList.add("active"); unitYears.classList.remove("active");
+    ageInput.step="1"; ageInput.max="336";
+    render();
+  });
+
+  function findBreed(name){
+    var n = name.trim().toLowerCase();
+    if (!n) return null;
+    for (var i=0;i<BREEDS.length;i++){
+      if (BREEDS[i].name.toLowerCase() === n) return BREEDS[i];
+    }
+    return null;
+  }
+
+  breedInput.addEventListener("input", render);
+  sizeSelect.addEventListener("change", render);
+  ageInput.addEventListener("input", render);
+
+  function render(){
+    var match = findBreed(breedInput.value);
+    var ageYears = unit === "months"
+      ? Math.max(0.08, (parseFloat(ageInput.value)||0)/12)
+      : Math.max(0.08, parseFloat(ageInput.value)||0);
+
+    var cat, lifespan, label;
+    if (match){
+      cat = match.size; lifespan = match.lifespan; label = match.name;
+      sizeSelect.value = cat; sizeSelect.setAttribute("disabled","disabled");
+      autoTag.textContent = "— auto-detected from breed";
+      breedHint.textContent = "Using " + match.name + "'s average lifespan of " + match.lifespan + " years.";
+      breedHint.className = "hint";
+    } else {
+      cat = sizeSelect.value; lifespan = DEFAULTS[cat]; label = SIZE_LABEL[cat] + " breed";
+      sizeSelect.removeAttribute("disabled");
+      autoTag.textContent = "";
+      breedHint.textContent = breedInput.value.trim()
+        ? "No exact match — using the " + SIZE_LABEL[cat].toLowerCase() + "-class average (" + lifespan + " yrs) instead."
+        : "Matched breeds fill in their own average lifespan below.";
+      breedHint.className = breedInput.value.trim() ? "hint warn" : "hint";
+    }
+
+    var adj = ageYears * (12/lifespan);
+    var breedAdjusted = 16*Math.log(adj) + 31;
+    breedAdjusted = Math.max(0, breedAdjusted);
+
+    var chart = interp(AGE_PTS, CHART[cat], ageYears);
+    var myth = ageYears * 7;
+
+    var frac = Math.min(1, ageYears/lifespan);
+    var stage = frac < 0.15 ? "puppy" : (frac < 0.75 ? "adult" : "senior");
+    var stageNames = {puppy:"Puppy", adult:"Adult", senior:"Senior"};
+
+    document.getElementById("breedBadgeText").textContent = label;
+    document.getElementById("breedDot").style.background = "var(--"+cat+")";
+    document.getElementById("breedBadge").style.borderColor = "var(--"+cat+")";
+
+    var pill = document.getElementById("stagePill");
+    pill.textContent = stageNames[stage];
+    pill.style.background = stage === "puppy" ? "var(--puppy)" : (stage === "senior" ? "var(--senior)" : "var(--surface-2)");
+    pill.style.color = stage === "adult" ? "var(--muted)" : "var(--accent-ink)";
+    pill.style.border = stage === "adult" ? "1px solid var(--line)" : "none";
+
+    document.getElementById("headline").innerHTML = Math.round(breedAdjusted*10)/10 + "<span>human years</span>";
+    document.getElementById("headlineSub").innerHTML = "<b>" + ageYears.toFixed(unit==="months"?2:1) + " dog years</b> old, expected lifespan " + lifespan + " years";
+
+    document.getElementById("mythVal").textContent = Math.round(myth*10)/10;
+    document.getElementById("chartVal").textContent = Math.round(chart*10)/10;
+    document.getElementById("heroVal").textContent = Math.round(breedAdjusted*10)/10;
+
+    document.getElementById("fill").style.width = (frac*100) + "%";
+    document.getElementById("fill").style.background = "var(--"+cat+")";
+    document.getElementById("marker").style.left = (frac*100) + "%";
+    document.getElementById("marker").style.background = "var(--"+cat+")";
+    document.getElementById("tickPuppy").style.left = "15%";
+    document.getElementById("tickSenior").style.left = "75%";
+    document.getElementById("lifespanLabel").textContent = "Expected lifespan (~" + lifespan + " yrs)";
+
+    var ah = document.getElementById("ageHint");
+    ah.textContent = unit === "months" ? "" : "Try decimals, e.g. 2.5 for two and a half years.";
+  }
+
+  render();
+})();
+</script>
