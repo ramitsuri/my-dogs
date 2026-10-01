@@ -118,6 +118,7 @@ class DogWidget : GlanceAppWidget() {
                             Column(
                                 modifier = GlanceModifier
                                     .fillMaxWidth()
+                                    .clickable(actionStartActivity<MainActivity>())
                                     .padding(vertical = 4.dp)
                                     .background(surfaceVariantColor)
                                     .cornerRadius(12.dp)
